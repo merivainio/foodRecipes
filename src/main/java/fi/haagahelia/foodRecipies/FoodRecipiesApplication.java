@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 
+import fi.haagahelia.foodRecipies.domain.Category;
+import fi.haagahelia.foodRecipies.domain.CategoryRepository;
 import fi.haagahelia.foodRecipies.domain.Recipe;
 import fi.haagahelia.foodRecipies.domain.RecipeRepository;
 
@@ -20,11 +22,15 @@ public class FoodRecipiesApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner recipeDemo(RecipeRepository repository) {
+	public CommandLineRunner recipeDemo(RecipeRepository repository, CategoryRepository categoryrepository) {
 		return (args) -> {
 			log.info("save a couple of recipes");
-			repository.save(new Recipe("Perunasalaatti", "Leikkaa kasvikset ja perunat, sekoita joukkoon majoneesi, laita jääkaappiin marinoitumaan."));
-			repository.save(new Recipe("Uunijuurekset", "Leikkaa juurekset, lisää joukkoon mausteet ja öljy, paista 200 asteessa 30 minuuttia."));	
+			categoryrepository.save(new Category("Salaatit"));
+			categoryrepository.save(new Category("Keitot"));
+			categoryrepository.save(new Category("Uuniruuat"));
+			
+			repository.save(new Recipe("Perunasalaatti", "Leikkaa kasvikset ja perunat, sekoita joukkoon majoneesi, laita jääkaappiin marinoitumaan.", categoryrepository.findByName("Salaatit").get(0)));
+			repository.save(new Recipe("Uunijuurekset", "Leikkaa juurekset, lisää joukkoon mausteet ja öljy, paista 200 asteessa 30 minuuttia.", categoryrepository.findByName("Uuniruuat").get(0)));	
 			
 			log.info("fetch all recipies");
 			for (Recipe recipe : repository.findAll()) {

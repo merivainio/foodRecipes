@@ -4,6 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Recipe {
@@ -14,10 +18,16 @@ public class Recipe {
 	private String name;
 	private String instructions;
 	
-	public Recipe(String name, String instructions) {
+	@ManyToOne
+	@JsonIgnore
+    @JoinColumn(name = "categoryid")
+    private Category category;
+	
+	public Recipe(String name, String instructions, Category category) {
 		super();
 		this.name = name;
 		this.instructions = instructions;
+		this.category = category;
 	}
 	
 	public Recipe() {
@@ -46,9 +56,18 @@ public class Recipe {
 	public String getInstructions() {
 		return instructions;
 	}
+	public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 	// toString
 	@Override
 	public String toString() {
+		if (this.category != null)
+		return "Recipe [id=" + id + ", name=" + name + ", instructions=" + instructions + ", category=" + this.getCategory() + "]";
+		else
 		return "Recipe [id=" + id + ", name=" + name + ", instructions=" + instructions +"]";
 	}
 	
