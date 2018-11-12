@@ -1,11 +1,15 @@
 package fi.haagahelia.foodRecipies.web;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import fi.haagahelia.foodRecipies.domain.CategoryRepository;
 import fi.haagahelia.foodRecipies.domain.Recipe;
@@ -49,6 +53,11 @@ public class RecipeController {
     public String deleteRecipe(@PathVariable("id") Long recipeId, Model model) {
     	repository.deleteById(recipeId);
         return "redirect:../recipelist";
-    }     
+    }
+    
+    @RequestMapping(value="/recipe/{id}", method = RequestMethod.GET)
+    public @ResponseBody Optional<Recipe> findRecipesRest(@PathVariable("id") Long recipeId) {	
+    	return repository.findById(recipeId);
+    }       
 
 }
