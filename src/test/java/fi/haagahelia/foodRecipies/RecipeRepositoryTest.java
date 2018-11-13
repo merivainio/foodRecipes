@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import fi.haagahelia.foodRecipies.domain.Category;
 import fi.haagahelia.foodRecipies.domain.Recipe;
 import fi.haagahelia.foodRecipies.domain.RecipeRepository;
 
@@ -33,15 +34,11 @@ public class RecipeRepositoryTest {
 	    
 	    @Test
 	    public void createNewRecipe() {
-	    	Recipe recipe = new Recipe("Haikuja", "Miikka Malli", 2007, 1212, (long) 9.50, new Category("Runot"));
-	    	repository.save(book);
-	    	assertThat(book.getId()).isNotNull();
+	    	Recipe recipe = new Recipe("Uunijuurekset", "Leikkaa juurekset, lisää joukkoon mausteet ja öljy, paista 200 asteessa 30 minuuttia.", new Category ("Uuniruuat"));
+	    	repository.save(recipe);
+	    	assertThat(recipe.getId()).isNotNull();
 	    }
 	    
-	    @Test
-	    public void deleteBook() {
-	    	repository.deleteById((long) 4);
-	    }
 
 	}
 
