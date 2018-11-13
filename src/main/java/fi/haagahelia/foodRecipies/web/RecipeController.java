@@ -3,6 +3,7 @@ package fi.haagahelia.foodRecipies.web;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class RecipeController {
         return "recipelist";
     }
     
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String editRecipe(@PathVariable("id") Long recipeId, Model model) {
     	model.addAttribute("recipe", repository.findById(recipeId));
@@ -49,6 +51,12 @@ public class RecipeController {
         return "redirect:recipelist";
 	}
     
+    @RequestMapping(value="/login")
+    public String login() {	
+        return "login";
+    }	
+    
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String deleteRecipe(@PathVariable("id") Long recipeId, Model model) {
     	repository.deleteById(recipeId);

@@ -1,18 +1,22 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>Recipelist</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 	<h1>Recipes</h1>
+	<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" class="btn btn-danger"/>
+		</form>
     <table>
     	<tr th:each= "recipe : ${recipes}">
     		<td th:text="${recipe.id}"></td>
     		<td><a th:href="@{/recipe/{id}(id=${recipe.id})}" th:text="${recipe.name}"></a></td>
     		<td th:text="${recipe.category.name}"></td>
     		<td th:text="${recipe.instructions}"></td>
-    		<td><a class="btn btn-success" th:href="@{/edit/{id}(id=${recipe.id})}">Edit</a></td>		
+    		<td sec:authorize="hasAuthority('ADMIN')"><a class="btn btn-success" th:href="@{/edit/{id}(id=${recipe.id})}">Edit</a></td>
+    		<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${recipe.id})}" class="btn btn-danger">Delete</a></td>		
     	</tr>
      </table>
      <a class="btn btn-success" href="/add">Add Recipe</a>    	
